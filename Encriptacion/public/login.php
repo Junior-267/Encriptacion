@@ -1,5 +1,5 @@
 <?php
-Iniciar sesion - Guardar datos del usuario en $_SESSION
+//Iniciar sesion - Guardar datos del usuario en $_SESSION
 if ($user && password_verify($password , $user['password'])) {
 $_SESSION['user_id'] = $user['id'];
 $_SESSION['username'] = $user['username'];
