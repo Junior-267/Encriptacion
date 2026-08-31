@@ -54,13 +54,13 @@ $telefono_descifrado = !empty($user['telefono_cifrado'])? descifrarAES256($user[
          <div class="info-box" style="margin-top: 20px; background: #ebf8ff;">
           <h4>Datos Cifrados (AES-256)</h4>
           <ul>
-              <li><strong>Telefono en BD (cifrado):</strong>
-                  <small><?php echo htmlspecialchars(substr($user['telefono_cifrado']?? 'N/A', 0, 30)); ?>...</small>
+             <li><strong>Token cifrado (Base64):</strong>
+                  <small><?php echo htmlspecialchars(substr($_SESSION['token_rsa_cifrado'] ?? 'N/A', 0, 30)); ?>...</small>
           </ul>
-         <li><strong>Telefono descifrado:</strong>
-           <?php echo htmlspecialchars($telefono_descifrado); ?>
+         <li><strong>Token descifrado:</strong>
+           <?php echo htmlspecialchars($_SESSION['token_rsa_descifrado'] ?? 'N/A'); ?>
         </li>
-       <li><strong>Algoritmo:</strong> AES-256-CBC</li>
+       <li><strong>Algoritmo:</strong> RSA-2048</li>
   </div>
 </body>
 </html>
