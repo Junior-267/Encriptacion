@@ -1,12 +1,14 @@
 <?php
 session_start();
 require_once '../config/database.php';
+require_once '../config/crypto.php'; //Importar modulo de cifrado
 $error = '';
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
+    $telefono = trim($_POST['telefono'] ?? '');  //Captura de entrada del formulario
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
@@ -28,8 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Hashear la contraseña, justo antes de mandar el usuario a la base de datos
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-            if ($stmt->execute([$username, $email, $hashed_password])) {
+            $telefono_cifrado = !empty($telefono) ? cifrarAES256($telefono) : null;
+
+            $stmt = $pdo->prepare("INSERT INTO users (username, email, password, telefono_cifrado) VALUES (?, ?, ?, ?)");
+            if ($stmt->execute([$username, $email, $hashed_password, $telefono_cifrado])) {
                 $success = '¡Registro exitoso!';
             } else {
                 $error = 'Registro fallido. Por favor, intentelo nuevamente.';
