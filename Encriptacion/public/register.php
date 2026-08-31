@@ -25,10 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->rowCount() > 0) {
             $error = 'Nombre de usuario o email existentes';
         } else {
-            // Generar el hash de la contraseña usando el algoritmo por defecto (Bcrypt/Argon2id según PHP)
+            // Hashear la contraseña, justo antes de mandar el usuario a la base de datos
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            // Guardar el hash en la base de datos en lugar de la contraseña en texto plano
             $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
             if ($stmt->execute([$username, $email, $hashed_password])) {
                 $success = '¡Registro exitoso!';
