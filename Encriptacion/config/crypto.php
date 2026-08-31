@@ -4,10 +4,27 @@ Módulo de Cifrado Simétrico AES-256-CBC
 Proporciona funciones para cifrar y descifrar datos sensibles
 */
 
-// Clave de 32 bytes para AES-256 (¡CAMBIAR EN PRODUCCIÓN!
-define('CLAVE_AES_256', 'C1av3S3cr3t4P4r4A3S256_PHP2026!');
+/*
+Cifrado con clave publica RSA-2048
+*/
+function cifrarRSA($mensaje) {
+ $clavePublica = file_get_contents(__DIR__ . '/publica.key');
+ openssl_public_encrypt($mensaje , $cifrado , $clavePublica);
+ return base64_encode($cifrado);
+}
 
 /*
+Descifra un mensaje con la clave privada RSA-2048
+*/
+function descifrarRSA($mensajeCifrado) {
+ $clavePrivada = file_get_contents(__DIR__ . '/privada.key');
+ openssl_private_decrypt(base64_decode($mensajeCifrado), $descifrado ,$clavePrivada);
+ return $descifrado;
+
+// Clave de 32 bytes para AES-256 (¡CAMBIAR EN PRODUCCIÓN!
+define('CLAVE_AES_256', 'C1av3S3cr3t4P4r4A3S256_PHP2026!');
+}
+ /*
 Cifra un texto plano usando AES-256-CBC
 
  @param string $textoPlano Texto a cifrar
