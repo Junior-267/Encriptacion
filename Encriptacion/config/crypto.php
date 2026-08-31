@@ -35,3 +35,12 @@ function descifrarAES256($cadenaBase64) {
   $datosBinarios = base64_decode($cadenaBase64);
   $metodo = 'aes-256-cbc';
   $ivLength = openssl_cipher_iv_length($metodo);
+
+
+ // Extraer el IV de los primeros bytes
+$iv = substr($datosBinarios , 0, $ivLength);
+$textoCifrado = substr($datosBinarios , $ivLength);
+return openssl_decrypt($textoCifrado , $metodo, CLAVE_AES_256 , 0, $iv);
+}
+?>
+ 
