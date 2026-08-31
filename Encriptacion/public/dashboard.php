@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+require_once '../config/database.php';
+require_once '../config/crypto.php';
 // Verificar si el usuario esta logueado
 if (!isset($_SESSION['user_id'])) {
   header('Location: login.php');
@@ -12,6 +14,13 @@ if (isset($_GET['logout'])) {
   header('Location: login.php');
   exit;
 }
+//Consulta de datos de usuario
+  $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+  $stmt->execute([$_SESSION['user_id']]);
+  $user = $stmt->fetch();
+
+//Descifrado condicional
+$telefono_descifrado = !empty($user['telefono_cifrado'])? descifrarAES256($user['telefono_cifrado']): 'No registrado';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -39,10 +48,19 @@ if (isset($_GET['logout'])) {
        <ul>
           <li><strong>User ID:</strong> <?php echo $_SESSION['user_id']; ?></li>
           <li><strong>Username:</strong> <?php echo htmlspecialchars($_SESSION['username']); ?></li>
-          <li><strong>Login time:</strong> <?php echo $_SESSION['login_time'] ?? date('Y-m-d H:i:s'); ?></li>
-        </ul>
-      </div>
-    </div>
+          <li><strong>Login time:</strong> <?php echo $_SESSION['login_time'] ?? date('Y-m-d H:i:s'); ?></li> 
+       </div>
+
+         <div class="info-box" style="margin-top: 20px; background: #ebf8ff;">
+          <h4>Datos Cifrados (AES-256)</h4>
+          <ul>
+              <li><strong>Telefono en BD (cifrado):</strong>
+                  <small><?php echo htmlspecialchars(substr($user['telefono_cifrado']?? 'N/A', 0, 30)); ?>...</small>
+          </ul>
+         <li><strong>Telefono descifrado:</strong>
+           <?php echo htmlspecialchars($telefono_descifrado); ?>
+        </li>
+       <li><strong>Algoritmo:</strong> AES-256-CBC</li>
   </div>
 </body>
 </html>
