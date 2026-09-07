@@ -6,6 +6,9 @@ if ($user && password_verify($password , $user['password'])) {
   $token_original = "SESION_" . bin2hex(random_bytes(16));
   // Cifrado asimétrico mediante clave pública
   $token_cifrado = cifrarRSA($token_original);
+  // Descifrado mediante clave privada
+  $token_descifrado = descifrarRSA ( $token_cifrado );
+  // Asignación de variables de sesión
   $_SESSION['user_id'] = $user['id'];
   $_SESSION['username'] = $user['username'];
   $_SESSION['login_time'] = date('Y-m-d H:i:s');
