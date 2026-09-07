@@ -1,8 +1,4 @@
 <?php
-/*
-Módulo de Cifrado Simétrico AES-256-CBC
-Proporciona funciones para cifrar y descifrar datos sensibles
-*/
 
 /*
 Cifrado con clave publica RSA-2048
@@ -21,14 +17,16 @@ function descifrarRSA($mensajeCifrado) {
  openssl_private_decrypt(base64_decode($mensajeCifrado), $descifrado ,$clavePrivada);
  return $descifrado;
 
-// Clave de 32 bytes para AES-256 (¡CAMBIAR EN PRODUCCIÓN!
-define('CLAVE_AES_256', 'C1av3S3cr3t4P4r4A3S256_PHP2026!');
-}
  /*
 Cifra un texto plano usando AES-256-CBC
 
  @param string $textoPlano Texto a cifrar
  @return string Texto cifrado en Base64 (incluye IV)
+*/
+
+/*
+Módulo de Cifrado Simétrico AES-256-CBC
+Proporciona funciones para cifrar y descifrar datos sensibles
 */
 
 function cifrarAES256($textoPlano) {
@@ -37,6 +35,9 @@ function cifrarAES256($textoPlano) {
     $iv = openssl_random_pseudo_bytes($ivLength);
     $textoCifrado = openssl_encrypt($textoPlano , $metodo, CLAVE_AES_256 , 0, $iv);
 
+ // Clave de 32 bytes para AES-256 (¡CAMBIAR EN PRODUCCIÓN!
+define('CLAVE_AES_256', 'C1av3S3cr3t4P4r4A3S256_PHP2026!');
+}
 
   //COnectar IV + texto cifrado y codificar en Base de datos
 return base64_encode($iv . $textoCifrado);
