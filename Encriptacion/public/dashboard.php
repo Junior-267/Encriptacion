@@ -32,10 +32,13 @@ $telefono_descifrado = !empty($user['telefono_cifrado'])? descifrarAES256($user[
 </head>
 <body>
   <div class="container">
+    <div style="margin-top: 20px; text-align: center;">
     <div class="dashboard">
       <div class="dashboard -header">
+        <a href="validar_integridad.php" target="_blank" class="btn btn-primary"style="width: auto; padding: 10px 20px;"> Probar Validación HMAC </a>
+      </div>
         <h2>Panel de Usuario </h2>
-        <a href="?logout=1" class="btn btn-danger">Logout </a>
+        <a href="?logout=1" class="btn btn-danger">Logout</a>
     </div>
 
       <div class="welcome">
